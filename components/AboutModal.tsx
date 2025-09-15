@@ -13,15 +13,21 @@ const AboutModal: React.FC<AboutModalProps> = ({ isOpen, onClose }) => {
         onClose();
       }
     };
-    window.addEventListener('keydown', handleEsc);
+    
+    // --- FIX: Prevent background scroll when modal is open ---
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+      window.addEventListener('keydown', handleEsc);
+    }
+
+    // Cleanup function
     return () => {
+      document.body.style.overflow = 'unset';
       window.removeEventListener('keydown', handleEsc);
     };
-  }, [onClose]);
+  }, [isOpen, onClose]);
 
   if (!isOpen) {
-    // This check is technically redundant now that it's conditionally rendered,
-    // but it's good practice for a modal component.
     return null; 
   }
 
@@ -37,9 +43,10 @@ const AboutModal: React.FC<AboutModalProps> = ({ isOpen, onClose }) => {
         className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full mx-auto p-8 sm:p-10 relative animate-fadeInUp"
         onClick={e => e.stopPropagation()} // Prevent closing when clicking inside the modal
       >
+        {/* FIX: Increased tap target size for better mobile usability */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 text-gray-400 hover:text-gray-800 transition-colors"
+          className="absolute top-2 right-2 p-2 rounded-full text-gray-500 hover:text-gray-800 hover:bg-gray-100 transition-all"
           aria-label="Close modal"
         >
           <XIcon className="h-6 w-6" />
