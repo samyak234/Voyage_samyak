@@ -4,7 +4,7 @@ import { Itinerary, UserPreferences, DayPlan, Activity, TravelCost, DestinationQ
 // --- Multi-Key Fallback System ---
 const apiKeys = (import.meta.env.VITE_API_KEY || '').split(',').map(k => k.trim()).filter(Boolean);
 if (apiKeys.length === 0) {
-    console.error("API_KEY environment variable not found or is empty. Please create a .env file and add your key(s).");
+    console.error("VITE_API_KEY environment variable not found or is empty. Please create a .env file and add your key(s).");
 }
 let currentKeyIndex = 0;
 // Initialize with the first key, or a placeholder to allow the app to run and show an error.
@@ -72,7 +72,7 @@ async function callAI<T>(prompt: string, schema: object): Promise<T> {
                     throw new Error("The AI returned an unexpected format. Please try again.");
                 }
                  if (error.message.includes('API key not valid')) {
-                    throw new Error("An invalid API key was provided. Please check your .env file.");
+                    throw new Error("An invalid API key was provided. Please check your .env file or Vercel environment variables.");
                 }
                 throw new Error(`Failed to generate content: ${error.message}`);
             }
@@ -134,7 +134,7 @@ async function* callAIStream(prompt: string): AsyncGenerator<string> {
                 
                 console.error("AI stream call failed:", error);
                 if (error.message.includes('API key not valid')) {
-                    throw new Error("An invalid API key was provided. Please check your .env file.");
+                    throw new Error("An invalid API key was provided. Please check your .env file or Vercel environment variables.");
                 }
                 throw new Error("An error occurred during AI stream generation.");
             }

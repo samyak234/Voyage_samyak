@@ -40,7 +40,7 @@ const AboutModal: React.FC<AboutModalProps> = ({ isOpen, onClose }) => {
       onClick={onClose}
     >
       <div
-        className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full mx-auto p-8 sm:p-10 relative animate-fadeInUp"
+        className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full mx-auto p-8 sm:p-10 relative animate-fadeInUp max-h-[90vh] overflow-y-auto"
         onClick={e => e.stopPropagation()} // Prevent closing when clicking inside the modal
       >
         {/* FIX: Increased tap target size for better mobile usability */}
